@@ -1,0 +1,88 @@
+{
+  "topics": [
+    {
+      "intent": "Exploratory Data Analysis",
+      "keywords": ["eda", "exploratory data analysis", "data inspection", "data profiling", "summary stats", "data distribution"],
+      "definition": "Exploratory Data Analysis (EDA) is the critical initial process of analyzing dataset characteristics, distributions, patterns, anomalies, and underlying structure using statistical summaries and graphical representations before formal modeling.",
+      "algorithm": "1. Inspect dataset shape, data types, and head/tail records.\n2. Compute descriptive statistics (mean, median, standard deviation, quartiles).\n3. Identify missing values, duplicates, and column cardinality.\n4. Visualize univariate distributions (histograms, boxplots) and bivariate relationships (scatter plots, correlation heatmaps).",
+      "complexity": "Time Complexity: O(n * d) to inspect and compute statistical summaries across n rows and d features.",
+      "example": "Examining a retail dataset to identify that 5% of customer income values are missing and detecting negative age entries as anomalies.",
+      "code": "import pandas as pd\nimport seaborn as sns\nimport matplotlib.pyplot as plt\n\ndf = pd.read_csv('dataset.csv')\nprint(df.info())\nprint(df.describe())\nprint(df.isnull().sum())\n\nsns.heatmap(df.corr(numeric_only=True), annot=True)\nplt.show()",
+      "summary": "EDA systematically reveals dataset structure, missing values, feature distributions, and correlations prior to analytical modeling."
+    },
+    {
+      "intent": "Data Wrangling",
+      "keywords": ["data wrangling", "data cleaning", "missing values", "imputation", "outliers", "data transformation", "pandas cleaning"],
+      "definition": "Data Wrangling (or Data Cleaning) is the process of cleaning, structuring, transforming, and enriching raw, messy, or incomplete data into a standardized format ready for downstream statistical analysis.",
+      "algorithm": "1. Handle missing data via deletion or imputation (mean, median, mode, or KNN).\n2. Deduplicate records based on unique key columns.\n3. Detect and handle numerical outliers using Z-score or Interquartile Range (IQR) thresholding.\n4. Parse and standardize string patterns, dates, and categorical text labels.",
+      "complexity": "Time Complexity: O(n * d) for standard vectorized transformations; space complexity depends on in-memory operations vs. in-place modifications.",
+      "example": "Filling missing customer salary values with the median salary of their specific job title category and converting string dates into datetime objects.",
+      "code": "import pandas as pd\n\ndf['age'] = df['age'].fillna(df['age'].median())\ndf.drop_duplicates(inplace=True)\ndf['created_at'] = pd.to_datetime(df['created_at'])\ndf['category'] = df['category'].str.strip().str.lower()",
+      "summary": "Data Wrangling transforms messy, incomplete, or inconsistent raw datasets into clean, structure-validated tables."
+    },
+    {
+      "intent": "Descriptive Statistics",
+      "keywords": ["descriptive statistics", "mean", "median", "mode", "variance", "standard deviation", "iqr", "skewness", "central tendency"],
+      "definition": "Descriptive Statistics quantitatively summarizes or describes the central tendency, dispersion, shape, and overall metrics of a sample dataset without making inferences beyond the observed data.",
+      "algorithm": "1. Central Tendency: Mean (arithmetic average), Median (50th percentile / middle value), Mode (most frequent value).\n2. Dispersion: Range (Max - Min), Variance (mean squared deviation), Standard Deviation (square root of variance), IQR (Q3 - Q1).\n3. Distribution Shape: Skewness (asymmetry) and Kurtosis (tail-heaviness).",
+      "complexity": "Time Complexity: O(n) for mean/variance calculation, O(n log n) for median/percentiles due to sorting overhead.",
+      "example": "Reporting a median salary of $65,000 to accurately reflect typical income when a few billionaire outliers severely skew the arithmetic mean upwards.",
+      "code": "import pandas as pd\n\ns = pd.Series([10, 20, 20, 30, 1000])\nprint('Mean:', s.mean())\nprint('Median:', s.median())\nprint('Std Dev:', s.std())\nprint('IQR:', s.quantile(0.75) - s.quantile(0.25))",
+      "summary": "Descriptive statistics summarize dataset properties using metrics of central tendency (mean/median) and dispersion (std dev/IQR)."
+    },
+    {
+      "intent": "Hypothesis Testing",
+      "keywords": ["hypothesis testing", "a/b testing", "p-value", "null hypothesis", "t-test", "z-test", "confidence interval", "significance level"],
+      "definition": "Hypothesis Testing (including A/B Testing) is a statistical decision-making framework used to evaluate whether empirical evidence in a sample dataset provides sufficient support to reject a default Null Hypothesis (H0) in favor of an Alternative Hypothesis (H1).",
+      "algorithm": "1. Formulate Null Hypothesis (H0: no effect) and Alternative Hypothesis (H1: true effect exists).\n2. Select significance level alpha (commonly alpha = 0.05).\n3. Calculate statistical test metric (e.g., t-score, z-score) and derive the p-value.\n4. Compare p-value to alpha: if p-value <= alpha, reject H0; otherwise fail to reject H0.",
+      "complexity": "Statistical Risk: Type I Error (False Positive rate = alpha) vs. Type II Error (False Negative rate = beta).",
+      "example": "Testing whether changing an e-commerce checkout button from blue to green produces a statistically significant lift in user conversion rate.",
+      "code": "from scipy import stats\n\n# Independent two-sample t-test\nvariant_a = [0, 1, 0, 0, 1, 0, 1]\nvariant_b = [1, 1, 1, 0, 1, 1, 1]\n\nt_stat, p_val = stats.ttest_ind(variant_a, variant_b)\nprint(f'p-value: {p_val:.4f}')\nif p_val < 0.05:\n    print('Statistically significant difference detected (Reject H0).')",
+      "summary": "Hypothesis testing evaluates whether observed sample differences or experimental results are statistically significant or attributable to random chance."
+    },
+    {
+      "intent": "Feature Engineering",
+      "keywords": ["feature engineering", "one-hot encoding", "label encoding", "standardization", "normalization", "minmax scaler", "feature scaling", "binning"],
+      "definition": "Feature Engineering is the domain-driven process of extracting, constructing, encoding, and scaling numerical and categorical variables from raw data to enhance model performance and diagnostic readability.",
+      "algorithm": "1. Categorical Encoding: Convert string categories into numeric vectors using One-Hot Encoding (nominal) or Ordinal Encoding (ranked).\n2. Feature Scaling: Standardize numerical features using StandardScaler (z-score normalization) or MinMax Scaler [0, 1].\n3. Transformation: Apply log or power transforms to stabilize variance and remove right-skewness.\n4. Feature Creation: Derive domain ratios (e.g., debt-to-income ratio).",
+      "complexity": "Space Complexity: One-Hot Encoding expands dimension d to d + k - 1 where k is category cardinality.",
+      "example": "Converting a categorical 'Device_Type' column into binary indicator columns (Desktop, Mobile, Tablet) and scaling 'Purchase_Amount' to zero mean.",
+      "code": "from sklearn.preprocessing import StandardScaler, OneHotEncoder\nimport pandas as pd\n\ndf = pd.DataFrame({'tier': ['low', 'high', 'mid'], 'income': [30000, 120000, 60000]})\nscaler = StandardScaler()\ndf['income_scaled'] = scaler.fit_transform(df[['income']])\nprint(df)",
+      "summary": "Feature Engineering creates, transforms, encodes, and scales dataset columns to maximize signal extraction."
+    },
+    {
+      "intent": "SQL Querying",
+      "keywords": ["sql", "sql querying", "joins", "inner join", "left join", "group by", "aggregations", "window functions", "having", "database query"],
+      "definition": "SQL (Structured Query Language) is the standard domain-specific query language used to extract, filter, aggregate, join, and manipulate relational data stored across database tables.",
+      "algorithm": "Key SQL Data Manipulations:\n1. Filtering: WHERE clause for row-level conditions; HAVING for group-aggregated conditions.\n2. Table Joining: INNER JOIN (matching keys), LEFT JOIN (all left rows + matching right rows), FULL OUTER JOIN.\n3. Aggregation: GROUP BY paired with COUNT(), SUM(), AVG(), MIN(), MAX().\n4. Window Functions: OVER (PARTITION BY ... ORDER BY ...) for running metrics.",
+      "complexity": "Execution Complexity: Depends on database indexing; index lookups operate in O(log n) time vs. O(n) full table scans.",
+      "example": "Joining customer profiles with transaction history tables to calculate total quarterly spending grouped by user state.",
+      "code": "SELECT \n    c.state, \n    COUNT(DISTINCT c.customer_id) AS active_customers, \n    AVG(t.amount) AS avg_transaction_value\nFROM customers c\nLEFT JOIN transactions t ON c.customer_id = t.customer_id\nWHERE t.status = 'COMPLETED'\nGROUP BY c.state\nHAVING AVG(t.amount) > 50\nORDER BY avg_transaction_value DESC;",
+      "summary": "SQL filters, joins, and aggregates relational database tables into clean analytical summaries."
+    },
+    {
+      "intent": "Data Visualization",
+      "keywords": ["data visualization", "plotting", "histogram", "boxplot", "scatter plot", "barplot", "seaborn", "matplotlib", "chart selection"],
+      "definition": "Data Visualization is the practice of representing structured data graphically using charts, plots, and maps to clearly communicate distributions, relationships, trends, and anomalies.",
+      "algorithm": "Chart Selection Rules:\n1. Single Continuous Variable: Histogram (distribution shape), Boxplot (quartiles & outlier detection).\n2. Single Categorical Variable: Bar chart.\n3. Two Continuous Variables: Scatter plot (bivariate correlation), Line chart (time series trajectory).\n4. Multivariate Correlations: Correlation Heatmap or Pairplot.",
+      "complexity": "Rendering constraint: High point-density scatter plots may cause visual overplotting; rendering sampling is recommended for n > 100,000 points.",
+      "example": "Generating a boxplot to compare salary distributions across different job roles while highlighting extreme income outliers.",
+      "code": "import matplotlib.pyplot as plt\nimport seaborn as sns\nimport pandas as pd\n\ndf = pd.DataFrame({'dept': ['HR', 'Tech', 'Tech', 'HR'], 'salary': [50000, 110000, 95000, 52000]})\nsns.boxplot(x='dept', y='salary', data=df)\nplt.title('Salary Distribution by Department')\nplt.show()",
+      "summary": "Data Visualization maps raw numbers onto appropriate visual charts (boxplots, scatter plots, heatmaps) to uncover patterns."
+    },
+    {
+      "intent": "Bias-Variance Tradeoff",
+      "keywords": ["bias-variance tradeoff", "underfitting", "overfitting", "model bias", "model variance", "generalization error", "structural error"],
+      "definition": "The Bias-Variance Tradeoff is a foundational concept describing the relationship between a model's simplification assumptions (Bias) and its sensitivity to small variations in training data (Variance).",
+      "algorithm": "Total Expected Generalization Error = Bias^2 + Variance + Irreducible Error.\n1. High Bias (Underfitting): The model is overly simplistic and fails to capture underlying patterns.\n2. High Variance (Overfitting): The model is overly complex and fits noise in the training set.\n3. Optimal Balance: Finding the sweet spot that minimizes total error on unseen validation data.",
+      "complexity": "Mathematical Tradeoff: Increasing model complexity inherently decreases bias while increasing variance.",
+      "example": "Fitting a simple straight line through parabolic data results in high bias (underfitting), whereas fitting a 15th-degree polynomial results in high variance (overfitting).",
+      "code": "# Conceptual representation in Data Science evaluation:\n# High Bias -> Low Training Accuracy, Low Testing Accuracy\n# High Variance -> High Training Accuracy, Low Testing Accuracy (Overfitting)",
+      "summary": "The Bias-Variance Tradeoff balances model simplicity (low variance, high bias) and flexibility (low bias, high variance) for optimal test generalization."
+    }
+  ],
+  "fallback": {
+    "intent": "Fallback",
+    "definition": "Sorry, I can answer only predefined Data Science questions."
+  }
+}

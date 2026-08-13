@@ -1,0 +1,5 @@
+# Financial Advisory Agent & Lab Dependencies
+yfinance>=0.2.0
+pandas>=2.0.0
+matplotlib>=3.5.0
+google-generativeai>=0.8.0
