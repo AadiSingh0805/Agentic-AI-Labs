@@ -2,24 +2,11 @@ import os
 import csv
 from datetime import datetime
 import pandas as pd
-
-try:
-    import matplotlib.pyplot as plt
-    HAS_MATPLOTLIB = True
-except ImportError:
-    plt = None
-    HAS_MATPLOTLIB = False
-
-try:
-    import yfinance as yf
-    HAS_YFINANCE = True
-except ImportError:
-    yf = None
-    HAS_YFINANCE = False
+import matplotlib.pyplot as plt
+import yfinance as yf
 
 # Log file constant
 LOG_FILE = "financial_interaction_log.csv"
-
 
 
 def apply_rules(percentage_change):
@@ -44,8 +31,8 @@ def apply_rules(percentage_change):
 
 def analyze_stock(symbol):
     """
-    Step 3, 4, 6 & 7: Fetch data via yfinance, process prices, handle invalid/missing input,
-    and apply rule-based decision logic.
+    Step 3, 4, 6 & 7: Fetch real stock data via yfinance, process prices,
+    handle invalid/missing inputs, and apply rule-based decision logic.
     """
     try:
         if not symbol or not str(symbol).strip():
@@ -57,40 +44,21 @@ def analyze_stock(symbol):
 
         symbol = str(symbol).strip().upper()
 
-        if symbol in ["INVALID_TICKER_XYZ", "ABCXYZ123", "WRONG_TICKER"]:
+        stock = yf.Ticker(symbol)
+        data = stock.history(period="5d")
+
+        if data.empty or len(data) < 2:
             return {
                 "status": "error",
                 "symbol": symbol,
                 "message": f"No financial data found for {symbol}."
             }
 
-        if HAS_YFINANCE:
-            stock = yf.Ticker(symbol)
-            data = stock.history(period="5d")
+        latest = data.iloc[-1]
+        previous = data.iloc[-2]
 
-            if data.empty or len(data) < 2:
-                return {
-                    "status": "error",
-                    "symbol": symbol,
-                    "message": f"No financial data found for {symbol}."
-                }
-
-            latest = data.iloc[-1]
-            previous = data.iloc[-2]
-
-            current_price = float(latest["Close"])
-            previous_close = float(previous["Close"])
-        else:
-            # Fallback mock data when yfinance is absent in environment
-            mock_prices = {
-                "TCS.NS": (2452.70, 2373.00),
-                "RELIANCE.NS": (1334.80, 1325.00),
-                "INFY.NS": (1850.00, 1900.00)
-            }
-            if symbol in mock_prices:
-                current_price, previous_close = mock_prices[symbol]
-            else:
-                current_price, previous_close = (2452.70, 2373.00)
+        current_price = float(latest["Close"])
+        previous_close = float(previous["Close"])
 
         price_change = current_price - previous_close
         percentage_change = (price_change / previous_close) * 100.0
@@ -114,7 +82,6 @@ def analyze_stock(symbol):
             "symbol": str(symbol) if symbol else "",
             "message": f"An unexpected error occurred: {str(e)}"
         }
-
 
 
 def generate_report(result):
@@ -199,27 +166,17 @@ def log_interaction(result, log_file=LOG_FILE):
 
 def show_stock_chart(symbol, save_path=None):
     """
-    Step 9: Stock Price Visualization
+    Step 9: Real Stock Price Visualization using Matplotlib
     """
-    if not HAS_MATPLOTLIB:
-        print("[Visualization Note]: Matplotlib is not available in the current environment to render graphical plots.")
+    stock = yf.Ticker(symbol)
+    data = stock.history(period="5d")
+
+    if data.empty:
+        print(f"No stock data available for {symbol}")
         return
 
-    if HAS_YFINANCE:
-        stock = yf.Ticker(symbol)
-        data = stock.history(period="5d")
-
-        if data.empty:
-            print(f"No stock data available for {symbol}")
-            return
-        x_vals = data.index
-        y_vals = data["Close"]
-    else:
-        x_vals = ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5"]
-        y_vals = [2383.9, 2463.1, 2460.0, 2373.0, 2452.7]
-
     plt.figure(figsize=(10, 5))
-    plt.plot(x_vals, y_vals, marker="o", linewidth=2, color="#1f77b4")
+    plt.plot(data.index, data["Close"], marker="o", linewidth=2, color="#1f77b4")
     plt.title(f"{symbol} - 5-Day Closing Price Trend", fontsize=14, fontweight="bold")
     plt.xlabel("Date", fontsize=12)
     plt.ylabel("Closing Price", fontsize=12)
@@ -233,7 +190,6 @@ def show_stock_chart(symbol, save_path=None):
     else:
         plt.show()
     plt.close()
-
 
 
 def generate_llm_report(result, user_input, api_client=None):
@@ -296,9 +252,9 @@ The Python decision MUST remain unchanged.
             )
             return response.text
         except Exception as e:
-            print(f"LLM API Call Notice: {e}. Falling back to deterministic guardrail engine.")
+            print(f"LLM API Call Notice: {e}")
 
-    # Guardrailed fallback report matching the exact trusted decision
+    # Structured report matching the exact trusted Python decision
     report = f"""### Financial Report: {result['symbol']}
 
 **1. Stock Overview**
