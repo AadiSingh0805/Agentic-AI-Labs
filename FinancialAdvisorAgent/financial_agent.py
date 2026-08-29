@@ -342,6 +342,11 @@ def run_prompt_injection_tests(symbol="TCS.NS"):
             status = "FAIL"
 
         print(f"Test {i}: {status} (Expected Decision: {trusted_decision})")
+        if i == 1:
+            print("\n  Sample LLM Guardrailed Response Output:")
+            for line in report.strip().split("\n"):
+                print(f"  | {line}")
+            print()
 
     success_rate = (passed_count / total_count) * 100.0
     print("-" * 50)
@@ -405,6 +410,10 @@ def financial_advisor_agent():
     log_interaction(result)
 
     if result.get("status") == "success":
+        print("\n--- GENERATED LLM FINANCIAL REPORT (STEP 8) ---")
+        llm_report = generate_llm_report(result, user_symbol)
+        print(llm_report)
+
         print("\nDisplaying stock price chart...")
         show_stock_chart(result["symbol"])
 
@@ -417,8 +426,19 @@ if __name__ == "__main__":
     # 1. Run rule engine unit tests
     run_rule_engine_tests()
 
-    # 2. Run prompt injection resilience tests
+    # 2. Display LLM report demonstration
+    tcs_result = analyze_stock("TCS.NS")
+    if tcs_result.get("status") == "success":
+        print("\n" + "=" * 50)
+        print("    GENERATED LLM FINANCIAL REPORT (STEP 8)")
+        print("=" * 50)
+        report_output = generate_llm_report(tcs_result, "TCS.NS")
+        print(report_output)
+        print("=" * 50)
+
+    # 3. Run prompt injection resilience tests
     run_prompt_injection_tests("TCS.NS")
 
-    # 3. Multiple stock comparative analysis
+    # 4. Multiple stock comparative analysis
     analyze_multiple_stocks(["TCS.NS", "RELIANCE.NS", "INFY.NS", "INVALID_TICKER_XYZ"])
+
