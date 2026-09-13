@@ -1,0 +1,86 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [4 0 R 6 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 5 0 R /Resources << /Font << /F1 3 0 R >> >> >>
+endobj
+5 0 obj
+<< /Length 876 >>
+stream
+BT
+/F1 10 Tf
+50 750 Td
+14 TL
+(MASTER PROFESSIONAL SERVICES AGREEMENT - PAGE 1) '
+() '
+(SECTION: 1. SCOPE OF SERVICES) '
+(Provider shall perform specialized enterprise architecture consulting and) '
+(artificial intelligence integration services as detailed in sequentially) '
+(numbered Statements of Work \('SOW'\).) '
+() '
+(SECTION: 2. PAYMENT TERMS AND INVOICING) '
+(Client shall remit payment for all approved milestones within forty-five) '
+(\(45\) days following invoice presentation. Disputed invoice line items must) '
+(be formally notified in writing within ten \(10\) business days.) '
+() '
+(SECTION: 3. RESPONSIBILITIES OF THE SUPPLIER) '
+(The Service Provider shall ensure all assigned personnel possess requisite) '
+(technical certifications, adhere to Client's cybersecurity policies, and) '
+(deliver weekly progress reports to Client Project Director.) '
+() '
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 7 0 R /Resources << /Font << /F1 3 0 R >> >> >>
+endobj
+7 0 obj
+<< /Length 973 >>
+stream
+BT
+/F1 10 Tf
+50 750 Td
+14 TL
+(MASTER PROFESSIONAL SERVICES AGREEMENT - PAGE 2) '
+() '
+(SECTION: 4. TERMINATION NOTICE PERIOD AND PROCEDURE) '
+(Client may terminate any active Statement of Work for convenience upon) '
+(forty-five \(45\) days written notice. Either party may terminate the Master) '
+(Service Agreement immediately upon written notice if the other party enters) '
+(bankruptcy or liquidation.) '
+() '
+(SECTION: 5. LIMITATION OF LIABILITY) '
+(Neither party's total aggregate liability arising out of or related to this) '
+(Agreement shall exceed the total fees paid by Client to Provider in the) '
+(twelve \(12\) months preceding the incident giving rise to liability.) '
+() '
+(SECTION: 6. GOVERNING LAW AND DISPUTE RESOLUTION) '
+(This Agreement shall be governed by the laws of the State of California.) '
+(Any unresolved dispute shall be submitted to binding arbitration under JAMS) '
+(Comprehensive Arbitration Rules in San Francisco, California.) '
+() '
+ET
+endstream
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000121 00000 n 
+0000000191 00000 n 
+0000000317 00000 n 
+0000001243 00000 n 
+0000001369 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R >>
+startxref
+2392
+%%EOF
